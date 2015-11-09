@@ -28,6 +28,11 @@
 		$interest_response = $InterestManager->addInterest($int_name);
 	}
 
+	if(isset($_GET["dropdown_interest"])) {
+		$InterestManager->addUserInterests($_SESSION['user_id'], $_GET["dropdown_interest"]);
+		$user_int_response = $InterestManager->addUserInterests($_SESSION['user_id'], $_GET["dropdown_interest"]);
+		var_dump($user_int_response);
+	}
 
 
 	
@@ -75,13 +80,28 @@ endif; ?>
 
 <h2>Minu huvialad</h2>
 
+<?php if(isset($user_int_response->success)): ?>
 
+<p style="color:green;">
+<?=$user_int_response->success->message;?>
+</p>
+
+<?php elseif(isset($user_int_response->error)): ?>
+
+<p style="color:red;">
+<?=$user_int_response->error->message;?>
+</p>
+
+<?php endif; ?>
+
+<form>
 <?=$InterestManager->createDropdown();?>
+<input type="submit" value="Lisa">
 
+</form>
 
-
-
-
+<h2>Loetelu</h2>
+<?=$InterestManager->getUserInterests();?>
 
 
 
